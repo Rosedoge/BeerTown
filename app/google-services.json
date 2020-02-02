@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "803967619024",
+    "firebase_url": "https://beertown-1d083.firebaseio.com",
+    "project_id": "beertown-1d083",
+    "storage_bucket": "beertown-1d083.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803967619024:android:e08156c4bfd2f85df873d5",
+        "android_client_info": {
+          "package_name": "com.rosecreates.beertown"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803967619024-q9hjejdvthuqkkd9ua7lm8db2g4p5qu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5tg1VKBPO-ePGO81PR3obkvC8XIdbJCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803967619024-q9hjejdvthuqkkd9ua7lm8db2g4p5qu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803967619024:android:354d025f4112ba00f873d5",
+        "android_client_info": {
+          "package_name": "com.rosecreates.beertownfb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803967619024-crpdnev2v514cjtg50ms3fdtg3t4l6b0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rosecreates.beertownfb",
+            "certificate_hash": "aa6937f70775391a5f29d5052bf96aa7fc2994a8"
+          }
+        },
+        {
+          "client_id": "803967619024-q9hjejdvthuqkkd9ua7lm8db2g4p5qu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5tg1VKBPO-ePGO81PR3obkvC8XIdbJCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803967619024-q9hjejdvthuqkkd9ua7lm8db2g4p5qu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
