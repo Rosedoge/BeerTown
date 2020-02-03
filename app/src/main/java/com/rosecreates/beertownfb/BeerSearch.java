@@ -29,10 +29,10 @@ public class BeerSearch extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Beer newPost = dataSnapshot.getValue(Beer.class);
-                System.out.println("Author: " + newPost.name);
-                System.out.println("Title: " + newPost.brewer);
-                //System.out.println("Previous Post ID: " + prevChildKey);
+                Beer newPost = dataSnapshot.child("One").getValue(Beer.class);
+                System.out.println("Author: " + newPost.Name);
+                System.out.println("Title: " + newPost.Brewer);
+
                 // A new comment has been added, add it to the displayed list
                 //Comment comment = dataSnapshot.getValue(Comment.class);
 
