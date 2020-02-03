@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,15 +21,20 @@ public class BeerSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_search);
 
+        FirebaseApp.initializeApp(this);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         final ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-
+                Beer newPost = dataSnapshot.getValue(Beer.class);
+                System.out.println("Author: " + newPost.name);
+                System.out.println("Title: " + newPost.brewer);
+                //System.out.println("Previous Post ID: " + prevChildKey);
                 // A new comment has been added, add it to the displayed list
-                Comment comment = dataSnapshot.getValue(Comment.class);
+                //Comment comment = dataSnapshot.getValue(Comment.class);
 
                 // ...
             }
@@ -39,7 +45,7 @@ public class BeerSearch extends AppCompatActivity {
 
                 // A comment has changed, use the key to determine if we are displaying this
                 // comment and if so displayed the changed comment.
-                Comment newComment = dataSnapshot.getValue(Comment.class);
+               // Comment newComment = dataSnapshot.getValue(Comment.class);
                 String commentKey = dataSnapshot.getKey();
 
                 // ...
@@ -62,7 +68,7 @@ public class BeerSearch extends AppCompatActivity {
 
                 // A comment has changed position, use the key to determine if we are
                 // displaying this comment and if so move it.
-                Comment movedComment = dataSnapshot.getValue(Comment.class);
+                //Comment movedComment = dataSnapshot.getValue(Comment.class);
                 String commentKey = dataSnapshot.getKey();
 
                 // ...
