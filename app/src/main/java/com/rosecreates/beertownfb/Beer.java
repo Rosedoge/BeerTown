@@ -11,7 +11,7 @@ public class Beer {
     public String Brewer;
     public String Style;
     public List<Comment> commentList;
-
+    public boolean expanded = false;
     public Beer() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }

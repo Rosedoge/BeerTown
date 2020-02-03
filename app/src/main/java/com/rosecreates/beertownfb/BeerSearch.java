@@ -1,6 +1,10 @@
 package com.rosecreates.beertownfb;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,10 +14,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class BeerSearch extends AppCompatActivity {
     private DatabaseReference mDatabase;
+    List<Beer> beers;
 // ...
     String TAG = "w";
     @Override
@@ -29,7 +37,7 @@ public class BeerSearch extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Beer newPost = dataSnapshot.child("One").getValue(Beer.class);
+                Beer newPost = dataSnapshot.child("one").getValue(Beer.class);
                 System.out.println("Author: " + newPost.Name);
                 System.out.println("Title: " + newPost.Brewer);
 
@@ -81,15 +89,13 @@ public class BeerSearch extends AppCompatActivity {
         };
 
 
-        mDatabase.orderByChild("height").addChildEventListener(childEventListener);
+
 
         // My top posts by number of stars
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                }
+
             }
 
             @Override
@@ -99,5 +105,38 @@ public class BeerSearch extends AppCompatActivity {
                 // ...
             }
         });
+
+
+        BeerAdapter adapter = new BeerAdapter(beers);
+
+        RecyclerView recyclerView = findViewById(R.id.recView);
+
+        // Removes blinks
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        // Standard setup
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+    }
+
+
+    public void basicQuery() {
+        // [START basic_query]
+        // My top posts by number of stars
+        String myUserId = getUid();
+        Query myTopPostsQuery = databaseReference.child("user-posts").child(myUserId)
+                .orderByChild("starCount");
+        myTopPostsQuery.addChildEventListener(new ChildEventListener() {
+            // TODO: implement the ChildEventListener methods as documented above
+            // [START_EXCLUDE]
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) { }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            public void onCancelled(DatabaseError databaseError) { }
+            // [END_EXCLUDE]
+        });
+        // [END basic_query]
     }
 }
