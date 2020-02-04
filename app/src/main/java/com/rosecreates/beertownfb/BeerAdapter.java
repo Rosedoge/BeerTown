@@ -1,6 +1,7 @@
 package com.rosecreates.beertownfb;
 
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,68 +10,61 @@ import android.widget.TextView;
 import com.rosecreates.beertownfb.Beer;
 import com.rosecreates.beertownfb.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.RecViewHolder> {
+public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerViewHolder>{
+    private ArrayList<Beer> list = new ArrayList<>();
+    private Context mContext;
+   // private List<Beer> list;
 
-    private List<Beer> list;
-
-    public BeerAdapter(List<Beer> list) {
-        this.list = list;
+    public BeerAdapter(Context context, ArrayList<Beer> beers) {
+        mContext = context;
+        list = beers;
     }
 
     @Override
-    public RecViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.item_beer, parent, false);
-        return new RecViewHolder(view);
+    public BeerAdapter.BeerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_beer, parent, false);
+        BeerViewHolder viewHolder = new BeerViewHolder(view);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecViewHolder holder, int position) {
-        Beer beer = list.get(position);
-
-        holder.bind(beer);
-
-        holder.itemView.setOnClickListener(v -> {
-            boolean expanded = beer.expanded;
-            beer.expanded = !beer.expanded;
-            notifyItemChanged(position);
-        });
+    public void onBindViewHolder(BeerAdapter.BeerViewHolder holder, int position) {
+        holder.bindBeer(list.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.size();
+        return list.size();
     }
 
-    public class RecViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title;
-        private TextView genre;
-        private TextView year;
-        private View subItem;
+    public class BeerViewHolder extends RecyclerView.ViewHolder {
+       // @Bind(R.id.restaurantImageView) ImageView mRestaurantImageView;
 
-        public RecViewHolder(View itemView) {
+        @BindView(R.id.title) TextView mNameTextView;
+        @BindView(R.id.description) TextView mCategoryTextView;
+        //@BindView(R.id.sub_item_year) TextView mRatingTextView;
+        private Context mContext;
+
+        public BeerViewHolder(View itemView) {
             super(itemView);
-
-            title = itemView.findViewById(R.id.item_title);
-            genre = itemView.findViewById(R.id.sub_item_genre);
-            year = itemView.findViewById(R.id.sub_item_year);
-            subItem = itemView.findViewById(R.id.sub_item);
+            ButterKnife.bind(this, itemView);
+            mContext = itemView.getContext();
         }
 
-        private void bind(Beer beer) {
-            boolean expanded = beer.expanded;
-
-            subItem.setVisibility(expanded ? View.VISIBLE : View.GONE);
-
-            title.setText(beer.Name);
-            genre.setText("Genre: " +beer.Style);
-            year.setText("Brewer " + beer.Brewer);
+        public void bindBeer(Beer beer) {
+            if(beer != null) {
+                mNameTextView.setText(beer.Name);
+                mCategoryTextView.setText(beer.Style);
+              //  mRatingTextView.setText("Rating: " + beer.Brewer + "/5");
+            }
         }
     }
 }

@@ -17,18 +17,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BeerSearch extends AppCompatActivity {
     private DatabaseReference mDatabase;
-    List<Beer> beers;
+    ArrayList<Beer> beers;
 // ...
     String TAG = "w";
+    TestAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_search);
 
+        beers =  new ArrayList<Beer>();
         FirebaseApp.initializeApp(this);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -36,10 +39,10 @@ public class BeerSearch extends AppCompatActivity {
         final ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Beer newPost = dataSnapshot.child("one").getValue(Beer.class);
-                System.out.println("Author: " + newPost.Name);
-                System.out.println("Title: " + newPost.Brewer);
+              //  Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                //Beer newPost = dataSnapshot.child("one").getValue(Beer.class);
+                //System.out.println("Author: " + newPost.Name);
+                //System.out.println("Title: " + newPost.Brewer);
 
                 // A new comment has been added, add it to the displayed list
                 //Comment comment = dataSnapshot.getValue(Comment.class);
@@ -88,8 +91,8 @@ public class BeerSearch extends AppCompatActivity {
             }
         };
 
-
-
+        basicQuery();
+        basicQueryValueListener();
 
         // My top posts by number of stars
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -107,30 +110,28 @@ public class BeerSearch extends AppCompatActivity {
         });
 
 
-        BeerAdapter adapter = new BeerAdapter(beers);
-
-        RecyclerView recyclerView = findViewById(R.id.recView);
-
-        // Removes blinks
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-
-        // Standard setup
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recView);
+        adapter = new TestAdapter(beers, getApplication());
         recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
     public void basicQuery() {
         // [START basic_query]
         // My top posts by number of stars
-        String myUserId = getUid();
-        Query myTopPostsQuery = databaseReference.child("user-posts").child(myUserId)
-                .orderByChild("starCount");
+       // String myUserId = getUid();
+
+        DatabaseReference o = mDatabase.getDatabase().getReference("Beers");
+
+        Query myTopPostsQuery = o.child("Beers").orderByChild("Name");
+
         myTopPostsQuery.addChildEventListener(new ChildEventListener() {
             // TODO: implement the ChildEventListener methods as documented above
             // [START_EXCLUDE]
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) { }
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
             public void onChildRemoved(DataSnapshot dataSnapshot) { }
             public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
@@ -139,4 +140,36 @@ public class BeerSearch extends AppCompatActivity {
         });
         // [END basic_query]
     }
+
+    public void basicQueryValueListener() {
+       // String myUserId = getUid();
+        Query myTopPostsQuery = mDatabase.child("Beers")//.child('Beers')
+                .orderByChild("Name");
+
+        // [START basic_query_value_listener]
+        // My top posts by number of stars
+        myTopPostsQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+
+                    Beer newPost = postSnapshot.getValue(Beer.class);
+                    System.out.println("Author: " + newPost.Name);
+                    System.out.println("Title: " + newPost.Brewer);
+                    if(newPos.Name.contains())
+                    beers.add(newPost);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+        // [END basic_query_value_listener]
+    }
+
 }
