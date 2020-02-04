@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BeerSearch.class);
         EditText editText = (EditText) findViewById(R.id.eText);
         String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra("name", message);
         startActivity(intent);
     }
 

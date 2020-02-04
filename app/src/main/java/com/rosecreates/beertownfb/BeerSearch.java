@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,12 +26,14 @@ public class BeerSearch extends AppCompatActivity {
     ArrayList<Beer> beers;
 // ...
     String TAG = "w";
+    String searchTerm;
     TestAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_search);
-
+        Intent intent = getIntent();
+        searchTerm = intent.getStringExtra("name");
         beers =  new ArrayList<Beer>();
         FirebaseApp.initializeApp(this);
 
@@ -156,9 +159,11 @@ public class BeerSearch extends AppCompatActivity {
                     Beer newPost = postSnapshot.getValue(Beer.class);
                     System.out.println("Author: " + newPost.Name);
                     System.out.println("Title: " + newPost.Brewer);
-                    if(newPos.Name.contains())
-                    beers.add(newPost);
-                    adapter.notifyDataSetChanged();
+                    if(newPost.Name.toUpperCase().contains(searchTerm.toUpperCase())){
+                        beers.add(newPost);
+                        adapter.notifyDataSetChanged();
+                    }
+
                 }
             }
 
