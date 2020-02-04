@@ -6,19 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TestAdapter extends RecyclerView.Adapter<View_Holder> {
-
-        List<Beer> list = Collections.emptyList();
+        private RecyclerViewClickListener mListener;
+        ArrayList<Beer> list;// = Collections.emptyList();
         Context context;
 
-public TestAdapter(List<Beer> list, Context context) {
+public TestAdapter(ArrayList<Beer> list, Context context, RecyclerViewClickListener listener)  {
         this.list = list;
         this.context = context;
+        mListener = listener;
         }
 
 @Override
@@ -26,6 +28,12 @@ public View_Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         //Inflate the layout, initialize the View Holder
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_beer, parent, false);
         View_Holder holder = new View_Holder(v);
+        v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                       mListener.onClick(v, holder.getAdapterPosition());
+                }
+        });
         return holder;
 
         }

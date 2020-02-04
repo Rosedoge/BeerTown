@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +30,7 @@ public class BeerSearch extends AppCompatActivity {
     String TAG = "w";
     String searchTerm;
     TestAdapter adapter;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +39,7 @@ public class BeerSearch extends AppCompatActivity {
         searchTerm = intent.getStringExtra("name");
         beers =  new ArrayList<Beer>();
         FirebaseApp.initializeApp(this);
-
+        context = getApplicationContext();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         final ChildEventListener childEventListener = new ChildEventListener() {
@@ -114,12 +117,24 @@ public class BeerSearch extends AppCompatActivity {
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recView);
-        adapter = new TestAdapter(beers, getApplication());
+        adapter = new TestAdapter( beers, context,   new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Log.d(TAG, "clicked position:" + position);
+                ExpandBeer(beers.get(position));
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
+    public void ExpandBeer(Beer beer){
+        Intent intent = new Intent(BeerSearch.this, BeerExpanded.class);
+        //EditText editText = (EditText) findViewById(R.id.eText);
+        //String message = editText.getText().toString();
+        intent.putExtra("beer", beer);
+        BeerSearch.this.startActivity(intent);
+    }
     public void basicQuery() {
         // [START basic_query]
         // My top posts by number of stars
