@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ExpandedBeerAdapter extends RecyclerView.Adapter<Beer_Holder> {
        // private RecyclerViewClickListener mListener;
-        Beer beer;// = Collections.emptyList();
+        ArrayList<Beer> beer;// = Collections.emptyList();
         Context context;
 
-        public ExpandedBeerAdapter(Beer beer, Context context)  {
-                this.beer = beer;
-                this.context = context;
+        public ExpandedBeerAdapter(ArrayList<Beer> beer, Context context)  {
+            this.beer = new ArrayList<>();
+            this.beer = beer;
+            this.context = context;
                // mListener = listener;
                 }
 
@@ -35,26 +36,20 @@ public class ExpandedBeerAdapter extends RecyclerView.Adapter<Beer_Holder> {
         public void onBindViewHolder(Beer_Holder holder, int position) {
 
                 //Use the provided View Holder on the onCreateViewHolder method to populate the current row on the RecyclerVie
-                if(position!=0) {
-                        position = position * 3;
-                        holder.comment.setText(beer.commentList.get(position).toString());
-                        holder.timestamp.setText(beer.commentList.get(position+1).toString());
-                        holder.username.setText(beer.commentList.get(position+2).toString());
-                        // holder.imageView.setImageResource(list.get(position).imageId);
-                }
-                else
-                {
-                    holder.comment.setText(beer.commentList.get(position).toString());
-                    holder.timestamp.setText(beer.commentList.get(position+1).toString());
-                    holder.username.setText(beer.commentList.get(position+2).toString());
-                }
+
+                holder.comment.setText(beer.get(position).commentList.get(0).toString());
+                holder.timestamp.setText(beer.get(position).commentList.get(1).toString());
+                holder.username.setText(beer.get(position).commentList.get(2).toString());
+
+
                 //animate(holder);
 
-                }
+            }
 
         @Override
         public int getItemCount() {
-                return beer.commentList.size();
+
+            return beer.size();
         }
 
 

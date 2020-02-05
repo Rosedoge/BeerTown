@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/commentvalue"
             android:layout_width="1000dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/timestamp"
             android:layout_toRightOf="@+id/imageView"
             android:text="comment" />
