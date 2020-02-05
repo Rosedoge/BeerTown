@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewDebug;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
@@ -21,6 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BeerSearch extends AppCompatActivity {
@@ -172,6 +174,12 @@ public class BeerSearch extends AppCompatActivity {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
 
                     Beer newPost = postSnapshot.getValue(Beer.class);
+                    for (DataSnapshot snappy: postSnapshot.child("Comments").getChildren()) {
+                        Comment comment = snappy.getValue(Comment.class);
+                        ArrayList<String> aListNumbers = new ArrayList<String>(Arrays.asList(comment.Username,comment.Value, Integer.toString(comment.Timestamp)));
+                        newPost.commentList = aListNumbers;
+                    }
+
                     System.out.println("Author: " + newPost.Name);
                     System.out.println("Title: " + newPost.Brewer);
                     if(newPost.Name.toUpperCase().contains(searchTerm.toUpperCase())){

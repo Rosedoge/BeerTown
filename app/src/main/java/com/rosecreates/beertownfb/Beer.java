@@ -55,6 +55,6 @@ public class Beer implements Parcelable {
         dest.writeString(Name);
         dest.writeString(Brewer);
         dest.writeString(Style);
-
+        dest.writeList(commentList);
     }
 }
